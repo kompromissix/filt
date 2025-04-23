@@ -24,10 +24,32 @@ function App() {
       // Сохраняем токен
       localStorage.setItem('token', response.data.token);
       setUser(jwtDecode(response.data.token));
-      alert('Регистрация успешна!');
+      alert('⠀⠀⠀⠀⢀⣴⠶⠿⠟⠛⠻⠛⠳⠶⣄⡀⠀⠀              ⠀⠀⠀⠀   ⠀⠀⣠⣶⣿⣿⣿⣶⣖⠶⢶⣤⡀⠀⠈⢿⣆⠀⠀⠀⠀⠀ ⢀⣴⣿⠋⠉⠉⠀⠀⠈⠉⠛⠿⢿⣷⡀⠀⠈⢷⡀⠀⠀⠀ ⡾⠉⡏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠙⢦⡀⠘⣷⡀⠀⠀ ⣷⢰⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢳⡀⢸⡇⠀⠀ ⢻⡜⡄⠀⢀⣀⣤⣶⣶⡄⣴⣾⣿⣛⣓⠀⠀⣧⢸⣇⠀⠀ ⢈⣧⣧⠀⢩⠞⠿⠿⠻⠀⠘⠙⠃⠛⠛⠓⠀⣿⣻⠿⣷⠀ ⢸⡵⣿⠀⠀⠀⠀⠀⠀⠀⠀⠠⡀⠀⠀⠀⠀⠀⢻⣇⡟⠀ ⠘⢧⣿⡀⠀⠀⠀⠀⢧⣤⣤⣶⣗⠀⠀⠀⠀⠀⠜⣽⠁⠀ ⠀⠈⢿⣧⠀⠀⠀⠀⣿⣿⣿⣿⣿⣀⠀⠀⠀⢠⡟⠁⠀⠀ ⠀⠀⠀⠘⣇⠀⠀⠰⠋⠉⠙⠂⠀⠉⠀⠀⠀⣼⡅⠀⠀⠀ ⠀⠀⠀⠀⠹⣦⡀⠀⠀⠀⠉⠉⠁⠀⠀⠀⣠⠏⢻⣤⡀⠀ ⠀⠀⠀⠀⠀⢹⡷⢦⣄⣀⣀⣀⣀⣤⣴⡾⠃⠀⠘⡿⠙⢶ ⠀⠀⠀⠀⠀⢨⡷⣤⡀⠈⠉⠉⢁⡴⠋⠀⠀⠀⣸⠃⠀⠀ ');
     } catch (err) {
       setError(err.response?.data?.message || 'Ошибка регистрации');
-      console.error('Registration error:', err);
+      console.error('Да как так?', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+    
+    try {
+      const response = await axios.post('http://localhost:5000/api/user/login', {
+        email,
+        password
+      });
+      
+      // Сохраняем токен
+      localStorage.setItem('token', response.data.token);
+      setUser(jwtDecode(response.data.token));
+      alert('Внимание! Пидр обнаружен!');
+    } catch (err) {
+      setError(err.response?.data?.message || 'Ошибка регистрации');
+      console.error('Опа...', err);
     } finally {
       setLoading(false);
     }
@@ -83,14 +105,30 @@ function App() {
         </div>
       ) : (
         <form onSubmit={handleRegister}>
-          <h2>Регистрация</h2>
+          <h2>Почеши мне яйки (っ˘ω˘ς )</h2>
           {error && <div className="error">{error}</div>}
-          <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required
+          <input type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} required
           />
-          <input type="password" placeholder="Пароль" value={password} onChange={(e) => setPassword(e.target.value)} required minLength="6"
+          <input type="password" placeholder="Пароль" onChange={(e) => setPassword(e.target.value)} required minLength="6"
           />
           <button type="submit" disabled={loading}>
-            {loading ? 'Регистрация...' : 'Зарегистрироваться'}
+            {loading ? 'Чипируем' : 'Бесплатная кострация'}
+          </button>
+        </form>
+
+      )}
+      {user ? (
+        <div></div>
+      ) : (
+        <form onSubmit={handleLogin}>
+          <h2>Войди в меня („• ᴗ •„)</h2>
+          {error && <div className="error">{error}</div>}
+          <input type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} required
+          />
+          <input type="password" placeholder="Пароль" onChange={(e) => setPassword(e.target.value)} required minLength="6"
+          />
+          <button type="submit" disabled={loading}>
+            {loading ? 'Регистрация...' : 'Аххх'}
           </button>
         </form>
       )}
